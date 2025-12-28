@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from warehouse.models.base import AuditMixin, Base
 
 
@@ -9,3 +9,8 @@ class SKU(Base, AuditMixin):
     ean: Mapped[str | None] = mapped_column(unique=True)
     name: Mapped[str]
     description: Mapped[str | None]
+
+    items: Mapped[list["Item"]] = relationship(back_populates="sku")
+    suppliers: Mapped[list["Supplier"]] = relationship(
+        secondary="supplier_skus", back_populates="skus"
+    )

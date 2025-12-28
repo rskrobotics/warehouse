@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from warehouse.models.base import AuditMixin, Base
 
 
@@ -10,3 +10,8 @@ class Store(Base, AuditMixin):
     email: Mapped[str]
     address: Mapped[str | None]
     is_active: Mapped[bool] = mapped_column(default=True)
+
+    items: Mapped[list["Item"]] = relationship(back_populates="store")
+    settings: Mapped["StoreSettings"] = relationship(
+        back_populates="store", uselist=False
+    )
