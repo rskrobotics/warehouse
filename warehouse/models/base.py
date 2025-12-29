@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4, UUID
 from sqlalchemy import func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
 
 
 class Base(DeclarativeBase):
@@ -17,7 +17,9 @@ class AuditMixin:
     )
     deleted_at: Mapped[datetime | None] = mapped_column(default=None)
 
-    __mapper_args__ = {"version_id_col": "version"}
+    @declared_attr
+    def __mapper_args__(cls):
+        return {"version_id_col": cls.__table__.c.version}
 
 
 # Define your models here by inheriting from Base

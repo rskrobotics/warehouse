@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from warehouse.models import Item
 
@@ -24,7 +25,7 @@ class ItemRepository:
         Hint: You can use select() to fetch, then modify the object directly.
         SQLAlchemy tracks changes automatically.
         """
-        stmt = select(Item).where(Item.uuid == uuid)
+        stmt = select(Item).where(Item.uuid == uuid).options(selectinload(Item.sku))
         result = await self.session.execute(stmt)
         item = result.scalar_one_or_none()
         if not item:

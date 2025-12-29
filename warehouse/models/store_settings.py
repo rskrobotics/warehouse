@@ -4,10 +4,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from warehouse.models.base import AuditMixin, Base
 
 
-class Currency(Enum):
-    PLN = 1
-    YEN = 2
-    EUR = 3
+class Currency(str, Enum):
+    PLN = "PLN"
+    YEN = "YEN"
+    EUR = "EUR"
 
 
 class StoreSettings(Base, AuditMixin):
